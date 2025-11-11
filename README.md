@@ -13,7 +13,7 @@
 
 ## 作业内容
 
-完成包括六个普通 phase 和一个 secret phase 的炸弹，并完成实验报告。详细的实验布置和一些可能出现的问题可以参考[实验指南](./Bomblab指导_2024ver.pdf).
+完成包括六个普通 phase 和一个 secret phase 的炸弹，并完成实验报告。
 
 本仓库仅需上传报告文件，**无需上传炸弹文件**。
 
@@ -65,13 +65,13 @@
 
 ### 1. 下载你的专属bomb💣
 
-访问 [http://ics.men.ci/bomb](http://ics.men.ci/bomb)，完成微人大验证，点击complie后刷新网页，再点击Download下载你的 bomblab。
+访问 [http://ics.men.ci/bomb](http://ics.men.ci/bomb)，完成微人大验证，某些浏览器可能需要点击高级设置->继续前往，点击complie后**刷新**网页，再点击Download下载你的 bomblab。
 
 **注：** 短时间访问会导致服务器卡顿，所以有可能刷新后没有反应，属于正常现象。如果长时间无法下载，请联系助教。
 
 ### 2. 布置你的bomb💻
 
-今年实验不限制解答的主机名称，同学们可以在自己的环境下布置（请使用linux，其它系统下出现的bug概不负责（bushi））
+今年实验不限制解答的主机名称，同学们可以在自己的环境下布置（请使用**linux**，其它系统下出现的bug概不负责（bushi））
 
 ### 3. 检查你的bomb🔍
 
@@ -88,7 +88,7 @@ README中有这个炸弹的信息，同学们可以通过对比是否是自己�
 
 - **objdump 反汇编：** `objdump -d ./bomb > bomb.dump`，`bomb.dump` 是程序的汇编代码。
 
-- **gdb：** `gdb bomb`。同时在调试时，可以用 `layout asm` 实时查看汇编指令。
+- **gdb：** `gdb bomb`。同时在调试时，可以用 `layout asm` 实时查看汇编指令。基本的gdb调试命令请参考[CS:APP P193-P194](materials/gdb_use.pdf)。
 
 - 你可以将答案记录到一个文件，比如 `solution.txt`，文件的内容和你拆弹时的输入一致（一行为一个phase的输入）。然后将文件名作为参数启动 bomb，例如 `./bomb solution.txt`，它会自动读取文件的内容作为输入（如果文件里只写了前几个phase的答案，后续需要在控制台手动输入其它phase的答案）。也可以用gdb启动：
 
@@ -96,13 +96,11 @@ README中有这个炸弹的信息，同学们可以通过对比是否是自己�
 gdb -args bomb solution.txt
 ```
 
-- **IDA：** 这是一个强大的图形化反汇编工具，可以节约你很多时间。参考[IDA 使用指南](./materials/ida_use.md)安装和使用IDA。
-
 ### 5. 我拆掉了吗🔥？
 
 通过访问[http://ics.men.ci/bomb/scoreboard](http://ics.men.ci/bomb/scoreboard)，可以观察每道题的通过与爆炸情况。数字是爆炸次数，淡青色背景表示题目通过。注意，爆炸次数会一定程度影响你的最终分数（网站分数仅供参考）。ddl之后网站不再接受炸弹的解除信息，请务必在ddl前进行炸弹拆除，并及时关注自己的爆炸情况。
 
-### 6. 可选nuclear☢
+### 6. 可选nuclear☢ (不计分)
 
 拆除nuclearlab会使用到一些常见(?)技巧
 
@@ -127,9 +125,9 @@ chmod 755 nuclearlab
 
 ## Tips
 
-1. 你需要在 obe 上提交 PDF 版本的实验报告，请确保 scoreboard 上面有你的成绩，实验截至时间初步定在 **2025年11月19日晚上23:55**。
+1. 你需要在你的github仓库中提交实验报告，请确保 scoreboard 上面有你的成绩，实验截至时间初步定在 **2025年12月17日晚上23:55**。
 
-2. **记得断网操作，避免炸弹爆炸被记录。**最好在 run/continue 之前确保打好断点，防止爆炸。你也可以思考如何使一个"功能完备"的bomb变得"功能残缺"，使得它无法通信、无法爆炸。这将在某种程度上便利你的拆弹工作。
+2. 在 run/continue 之前确保打好断点，防止爆炸。你也可以思考如何使一个"功能完备"的bomb变得"功能残缺"，使得它无法通信、无法爆炸。这将在某种程度上便利你的拆弹工作。
 
 3. 你可以试着不用知道答案，借助gdb速通bomblab（小心栈、变量等各种问题导致程序挂掉）。（助教注：现在服务器会在本地验证你的代码，也就是说直接跳过去的方式行不通）当然最后你还需要正常完成实验来完成你的报告。
 
@@ -148,14 +146,23 @@ chmod 755 nuclearlab
    b phase_2
    b "想要打断的函数"
    ```
-
-   在使用完之后，记得在gdb运行时输入 `info b` 查看当前断点状态，防止错误爆炸。
-
-7. 祝大家玩的愉快。
+   在配置.gdbinit文件，可能你会碰到权限问题，解决方法如下：
+   ``` bash
+   mkdir -p /root/.config/gdb 
+   echo "add-auto-load-safe-path /home/bomblab/.gdbinit" >> /root/.config/gdb/gdbinit （把/home/bomblab换成你自己的路径）或者
+   echo "set auto-load safe-path /" >> /root/.config/gdb/gdbinit （不推荐）
+   如果你不是root用户：
+   sudo mkdir -p /root/.config/gdb 
+   echo "add-auto-load-safe-path /home/bomblab/.gdbinit" | sudo tee -a /root/.config/gdb/gdbinit （依然记得替换你自己的路径！）
+   ```
+   eg. 在使用完之后，记得在gdb运行时输入 `info b` 查看当前断点状态，防止错误爆炸。
+   
+7. 你可以选择安装vscode插件来为你的汇编提供高亮。在Extension中安装x86 and x86_64 Assembly，为asm后缀的文件提供高亮。
+8. 祝大家玩的愉快。
 
 ---
 
-## 一些出现问题的解决方案
+## 一些问题的解决方案
 
 ### 1. 网站还是打不开怎么办
 
