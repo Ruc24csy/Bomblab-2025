@@ -377,7 +377,7 @@ Breakpoint 1, 0x0000555555555c67 in secret_phase ()
 与中国象棋规则一致
 
 - 跳马方法的寻找：
-![alt text](imgs/horse.pngd:\personal_documents\大学\大学课程\计算机系统基础I\Bomblab\report\report.pdf)
+![alt text](imgs/horse.png)
 如图所示，我们不难找到五步就抵达终点的办法：33113 或 33311
 至此，我们顺利地解决了所有炸弹！
 
